@@ -1,12 +1,13 @@
+import React from 'react'
 import { SearchHolder } from "./styles";
 import Search from "../Search";
 import SelectComp from "../Select";
 
-const SearchHolderComp = () => {
+const SearchHolderComp = ({selectSearch}: {selectSearch(e: React.ChangeEvent<HTMLSelectElement>): void}) => {
     return(
         <SearchHolder>
             <Search />
-            <SelectComp />
+            <SelectComp selectSearch={selectSearch} />
         </SearchHolder>
     )
 }

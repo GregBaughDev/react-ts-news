@@ -1,8 +1,9 @@
+import React from "react"
 import { Select } from "./styles"
 
-const SelectComp = () => {
+const SelectComp = ({selectSearch}: {selectSearch(e: React.ChangeEvent<HTMLSelectElement>): void}) => {
     return(
-        <Select>
+        <Select onChange={selectSearch}>
             <option disabled>Select topic</option>
             <option>Headlines</option>
             <option>Australia</option>

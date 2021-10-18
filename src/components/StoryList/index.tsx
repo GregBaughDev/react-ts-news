@@ -1,10 +1,6 @@
 import { H2 } from './styles'
 
-interface Props {
-    title: string
-}
-
-const StoryList: React.FC<Props> = ({title}) => {
+const StoryList = ({title}: {title: string}) => {
     return(
         <H2>{title}</H2>
     )

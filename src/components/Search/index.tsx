@@ -1,6 +1,6 @@
 import { Input } from "./styles"
 
-const Search: React.FC = () => {
+const Search = () => {
     const searchNews = () => {
         console.log("searching")
     }
