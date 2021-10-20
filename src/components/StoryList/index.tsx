@@ -6,7 +6,7 @@ const StoryList = ({title, news}: {title: string, news: any[]}) => {
             <H2>{title}</H2>
             {news.map((story, idx) => (
                 <Section key={idx}>
-                    <H3><A rel="noreferrer" target="_blank" href={story.webUrl}>{story.webTitle.substr(0, 120)}...</A></H3>
+                    <H3><A rel="noreferrer" target="_blank" href={story.webUrl}>{story.webTitle}</A></H3>
                 </Section>
             ))}
         </>

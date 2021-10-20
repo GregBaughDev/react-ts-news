@@ -13,7 +13,7 @@ export const H3 = styled.h3`
 `
 
 export const Section = styled.section`
-    width: 100%;
+    width: auto;
     background-color: #FFB6B6;
     margin: 2vh 0;
     height: 8vh;
@@ -21,6 +21,8 @@ export const Section = styled.section`
     transition: background-color 0.5s;
     display: flex;
     align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
 
     &:hover {
         background-color: #E1A0A0;
