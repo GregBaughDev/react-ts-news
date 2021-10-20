@@ -1,26 +1,14 @@
-import { useState, useEffect } from 'react'
-import { H2 } from './styles'
+import { H2, H3, A, Section } from './styles'
 
-const StoryList = ({title}: {title: string}) => {
-    const [news, setNews] = useState([])
-
-    const retrieveHeadlines = async () => {
-        try {
-            const response = await fetch(`https://content.guardianapis.com/search?order-by=newest&api-key=${process.env.REACT_APP_API_KEY}`)
-            const newsResult = await response.json()
-            setNews(newsResult)
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
-    useEffect(() => {
-        retrieveHeadlines()
-    }, [])
-
+const StoryList = ({title, news}: {title: string, news: any[]}) => {
     return(
         <>
             <H2>{title}</H2>
+            {news.map((story, idx) => (
+                <Section key={idx}>
+                    <H3><A rel="noreferrer" target="_blank" href={story.webUrl}>{story.webTitle.substr(0, 120)}...</A></H3>
+                </Section>
+            ))}
         </>
     )
 }
