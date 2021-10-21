@@ -7,36 +7,37 @@ function App() {
   const [title, setTitle] = useState<string>("Headlines")
   const [news, setNews] = useState<any[]>([])
 
-    const retrieveHeadlines = async () => {
-        try {
-            const response = await fetch(`https://content.guardianapis.com/search?order-by=newest&api-key=${process.env.REACT_APP_API_KEY}`)
-            const newsResult = await response.json()
-            setNews(newsResult.response.results)
-        } catch (err) {
-            console.log(err)
-        }
-    }
+  // TO DO: Add pagination
 
-    useEffect(() => {
-        retrieveHeadlines()
-    }, [])
+  useEffect(() => {
+      apiQuery(title)
+  }, [])
 
-  const selectSearch = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const apiQuery = async (input: string) => {
+    let response: any
     try {
-      const response = await fetch(`https://content.guardianapis.com/search?order-by=newest&q=${e.target.value}%20AND%20NOT%20Football&api-key=${process.env.REACT_APP_API_KEY}`)
+      if(news.length === 0 || input === "Headlines"){
+        response = await fetch(`https://content.guardianapis.com/search?order-by=newest&api-key=${process.env.REACT_APP_API_KEY}`)
+      } else {  
+        response = await fetch(`https://content.guardianapis.com/search?order-by=newest&q=${input}%20AND%20NOT%20Football&api-key=${process.env.REACT_APP_API_KEY}`)
+      }
       const newsResult = await response.json()
       setNews(newsResult.response.results)
-      setTitle(e.target.value)
+      input.length === 0 ? setTitle("Headlines") : setTitle(input)
     } catch (err) {
       console.log(err)
     }
+  }
+
+  const selectSearch = async (e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) => {
+    await apiQuery(e.target.value)
   }
 
   return (
     <>
       <GlobalStyle />
       <h1>News App</h1>
-      <SearchHolderComp selectSearch={selectSearch} />
+      <SearchHolderComp selectSearch={selectSearch}/>
       <StoryList title={title} news={news} />
     </>
   );
