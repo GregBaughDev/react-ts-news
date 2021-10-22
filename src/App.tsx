@@ -6,24 +6,27 @@ import StoryList from './components/StoryList';
 function App() {
   const [title, setTitle] = useState<string>("Headlines")
   const [news, setNews] = useState<any[]>([])
+  const [page, setPage] = useState<number>(1)
 
   // TO DO: Add pagination
 
-  useEffect(() => {
-      apiQuery(title)
-  }, [])
+  const apiQuery = async (input: string = "Headlines") => {
+    try { 
+        let response = await fetch(`https://content.guardianapis.com/search?order-by=newest&page=${page}&q=${input}%20AND%20NOT%20Football&api-key=${process.env.REACT_APP_API_KEY}`)  
+        const newsResult = await response.json()
+        setNews(newsResult.response.results)
+        input.length === 0 ? setTitle("Headlines") : setTitle(input)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
-  const apiQuery = async (input: string) => {
-    let response: any
+  const retrieveHeadlines = async () => {
     try {
-      if(news.length === 0 || input === "Headlines"){
-        response = await fetch(`https://content.guardianapis.com/search?order-by=newest&api-key=${process.env.REACT_APP_API_KEY}`)
-      } else {  
-        response = await fetch(`https://content.guardianapis.com/search?order-by=newest&q=${input}%20AND%20NOT%20Football&api-key=${process.env.REACT_APP_API_KEY}`)
-      }
-      const newsResult = await response.json()
-      setNews(newsResult.response.results)
-      input.length === 0 ? setTitle("Headlines") : setTitle(input)
+      let response = await fetch(`https://content.guardianapis.com/search?order-by=newest&api-key=${process.env.REACT_APP_API_KEY}`)
+      const newsResponse = await response.json()
+      console.log(newsResponse)
+      setNews(newsResponse.response.results)
     } catch (err) {
       console.log(err)
     }
@@ -33,12 +36,16 @@ function App() {
     await apiQuery(e.target.value)
   }
 
+  useEffect(() => {
+    retrieveHeadlines()
+  }, [])
+
   return (
     <>
       <GlobalStyle />
       <h1>News App</h1>
       <SearchHolderComp selectSearch={selectSearch}/>
-      <StoryList title={title} news={news} />
+      <StoryList title={title} news={news} page={page} />
     </>
   );
 }

@@ -33,3 +33,25 @@ export const A = styled.a`
     text-decoration: none;
     color: black;
 `
+
+export const Pagination = styled.div`
+    width: auto;
+    margin: 2vh 0;
+    height: 8vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
+
+export const Button = styled.button`
+    font-family: Work Sans;
+    background-color: #FFB6B6;
+    border: none;
+    font-size: 1.25rem;
+    padding: 2vh 2vw;
+    border-radius: 50px;
+
+    &:hover {
+        background-color: #E1A0A0;
+    }
+`

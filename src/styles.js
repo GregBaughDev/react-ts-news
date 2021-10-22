@@ -1,9 +1,9 @@
-import styled, { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
     @font-face {
         font-family: 'Work Sans';
-        src: local(./src/public/fonts/WorkSans-VariableFont_wght.ttf);
+        src: url(./src/public/fonts/WorkSans-VariableFont_wght.ttf);
     }
 
     *,
