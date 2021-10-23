@@ -8,7 +8,7 @@ function App() {
   const [news, setNews] = useState<any[]>([])
   const [page, setPage] = useState<number>(1)
 
-  // TO DO: Add pagination
+  // TO DO: BUG - Pagination is sticking until page 3, clear search box when select changes
 
   const apiQuery = async (input: string = "Headlines") => {
     try { 
@@ -25,7 +25,6 @@ function App() {
     try {
       let response = await fetch(`https://content.guardianapis.com/search?order-by=newest&api-key=${process.env.REACT_APP_API_KEY}`)
       const newsResponse = await response.json()
-      console.log(newsResponse)
       setNews(newsResponse.response.results)
     } catch (err) {
       console.log(err)
@@ -33,6 +32,7 @@ function App() {
   }
 
   const selectSearch = async (e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) => {
+    setPage(1)
     await apiQuery(e.target.value)
   }
 
@@ -40,12 +40,20 @@ function App() {
     retrieveHeadlines()
   }, [])
 
+  const updatePageCount = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const input = e.target as HTMLElement
+    input.innerText === "Next" ? setPage(page => page += 1) : setPage(page => page -= 1)
+    apiQuery(title)
+  }
+
+  console.log(page)
+
   return (
     <>
       <GlobalStyle />
       <h1>News App</h1>
       <SearchHolderComp selectSearch={selectSearch}/>
-      <StoryList title={title} news={news} page={page} />
+      <StoryList title={title} news={news} page={page} updatePageCount={updatePageCount} />
     </>
   );
 }

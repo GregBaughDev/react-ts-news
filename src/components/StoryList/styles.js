@@ -10,6 +10,10 @@ export const H2 = styled.h2`
 export const H3 = styled.h3`
     font-size: 1.25rem;
     font-weight: 400;
+
+    &.page-dsp {
+        text-align: center;
+    }
 `
 
 export const Section = styled.section`
