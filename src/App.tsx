@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { GlobalStyle } from './styles';
 import SearchHolderComp from './components/SearchHolder/index'
 import StoryList from './components/StoryList';
+import './styles.css'
 
 function App() {
   const [title, setTitle] = useState<string>("Headlines")
   const [news, setNews] = useState<any[]>([])
   const [page, setPage] = useState<number>(1)
-
-  // TO DO: BUG - Pagination is sticking until page 3, clear search box when select changes
+  const searchInput = useRef<HTMLInputElement>(null)
 
   const apiQuery = async (input: string = "Headlines") => {
     try { 
@@ -32,6 +32,11 @@ function App() {
   }
 
   const selectSearch = async (e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) => {
+    if(e.nativeEvent.type === "change"){
+      if(searchInput.current?.value){
+        searchInput.current.value = ''
+      }
+    }
     setPage(1)
     await apiQuery(e.target.value)
   }
@@ -46,13 +51,11 @@ function App() {
     apiQuery(title)
   }
 
-  console.log(page)
-
   return (
     <>
       <GlobalStyle />
       <h1>News App</h1>
-      <SearchHolderComp selectSearch={selectSearch}/>
+      <SearchHolderComp selectSearch={selectSearch} searchInput={searchInput} />
       <StoryList title={title} news={news} page={page} updatePageCount={updatePageCount} />
     </>
   );
